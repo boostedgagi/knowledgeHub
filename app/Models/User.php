@@ -41,5 +41,4 @@ class User extends Model
         'createdAt' => 'datetime',
         'updatedAt' => 'datetime'
     ];
-
 }
