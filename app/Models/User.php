@@ -37,7 +37,6 @@ class User extends Model
     protected $casts = [
         'isAllowed' => 'boolean',
         'reputation' => 'integer',
-        'roles' => 'array',
         'createdAt' => 'datetime',
         'updatedAt' => 'datetime'
     ];

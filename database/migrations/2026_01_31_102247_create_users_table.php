@@ -17,8 +17,9 @@ return new class extends Migration
             $table->string('lastName');
             $table->string('email')->unique();
             $table->string('password');
+            $table->integer('reputation');
             $table->boolean('isAllowed')->default(1);
-            $table->json('roles')->nullable();
+            $table->string('roles')->nullable();
             $table->dateTime('createdAt');
             $table->dateTime('updatedAt')->nullable();
         });
