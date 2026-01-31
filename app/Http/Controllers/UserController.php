@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use http\Env\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -49,5 +51,39 @@ class UserController extends Controller
         ]);
 
         return response()->json($user, 201);
+    }
+
+    /**
+     * PUT /users/{id}
+     * @param int $id
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function update(int $id, Request $request)
+    {
+        $userToEdit = DB::table('users')->where('id', $id);
+        $userToEdit->update($request->all());
+
+        $userToEdit->update(['updatedAt' => Carbon::now()->format('Y-m-d H:i:s')]);
+
+        return response()->json(
+            $userToEdit,
+            201
+        );
+    }
+
+    /**
+     * DELETE /users/{id}
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function delete(int $id)
+    {
+        DB::table('users')->delete($id);
+
+        return response()->json(
+            [],
+            204
+        );
     }
 }
