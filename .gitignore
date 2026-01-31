@@ -8,6 +8,7 @@ README.md
 .phpactor.json
 .phpunit.result.cache
 compose.yaml
+database/schema/
 /.fleet
 /.idea
 /.nova
