@@ -41,4 +41,13 @@ class User extends Model
         'createdAt' => 'datetime',
         'updatedAt' => 'datetime'
     ];
+
+    public function getFullName(){
+        return $this->firstName.' '.$this->lastName;
+    }
+
+    public function getComments(){
+        return $this->hasMany(Comment::class);
+    }
+
 }
