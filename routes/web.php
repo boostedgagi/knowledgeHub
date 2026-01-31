@@ -9,6 +9,8 @@ Route::get('/', function () {
 
 Route::get('/users', [UserController::class, 'showAll']);
 Route::get('/users/{id}', [UserController::class, 'show']);
-Route::post('/users', [UserController::class, 'register']);
+Route::post('/users', [UserController::class, 'register'])
+    ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+
 
 

@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,10 +18,10 @@ return new class extends Migration
             $table->string('lastName');
             $table->string('email')->unique();
             $table->string('password');
-            $table->integer('reputation');
+            $table->integer('reputation')->default(0);
             $table->boolean('isAllowed')->default(1);
             $table->string('roles')->nullable();
-            $table->dateTime('createdAt');
+            $table->dateTime('createdAt')->default(Carbon::now()->format('Y-m-d H:i:s'));
             $table->dateTime('updatedAt')->nullable();
         });
     }
