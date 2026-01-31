@@ -25,6 +25,8 @@ class Post extends Model
         'updatedAt',
     ];
 
+
+
     public function user(){
         return $this->belongsTo(User::class);
     }

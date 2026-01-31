@@ -16,11 +16,13 @@ return new class extends Migration
             $table->text('content');
             $table->integer('upVotes')->default(0);
             $table->integer('downVotes')->default(0);
-            $table->foreignId('categoryId')->constrained()->nullOnDelete();
+            $table->foreignId('categoryId')->nullable()->constrained('category','id')->nullOnDelete();
             $table->foreignId('userId')->constrained()->cascadeOnDelete();
             $table->dateTime('createdAt');
             $table->dateTime('updatedAt')->nullable();
         });
+
+
     }
 
     /**

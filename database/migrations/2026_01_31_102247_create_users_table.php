@@ -17,10 +17,10 @@ return new class extends Migration
             $table->string('lastName');
             $table->string('email');
             $table->string('password');
-            $table->boolean('isAllowed');
-            $table->json('roles');
+            $table->boolean('isAllowed')->default(1);
+            $table->json('roles')->nullable();
             $table->dateTime('createdAt');
-            $table->dateTime('updatedAt');
+            $table->dateTime('updatedAt')->nullable();
         });
     }
 
