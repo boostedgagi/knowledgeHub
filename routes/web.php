@@ -31,7 +31,7 @@ Route::delete('/posts/{id}', [PostController::class, 'delete'])
 
 //Category
 Route::get('/categories/{id}', [CategoryController::class, 'show']);
-Route::post('/categories', [CategoryController::class, 'make'])
+Route::post('/categories', [CategoryController::class, 'create'])
     ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 Route::put('/categories/{id}', [CategoryController::class, 'update'])
     ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
