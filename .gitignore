@@ -9,6 +9,7 @@ README.md
 .phpunit.result.cache
 compose.yaml
 database/schema/
+storage/*
 /.fleet
 /.idea
 /.nova

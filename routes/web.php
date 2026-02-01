@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
@@ -19,6 +20,12 @@ Route::put('/users/{id}', [UserController::class, 'update'])
 Route::delete('/users/{id}', [UserController::class, 'delete'])
     ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 
+Route::post('/login', [AuthController::class, 'login'])
+    ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+
+Route::middleware('jwt')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
 //Posts
 Route::get('/posts', [PostController::class, 'showAll']);
 Route::get('/posts/{id}', [PostController::class, 'show']);

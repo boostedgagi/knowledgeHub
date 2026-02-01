@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller
 {
@@ -42,14 +45,22 @@ class UserController extends Controller
      */
     public function register(Request $request)
     {
-        $user = DB::table('users')->insert([
-            'firstName' => $request->input('firstName'),
-            'lastName' => $request->input('lastName'),
-            'email' => $request->input('email'),
-            'password' => $request->input('password')
+        $request->validate([
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6',
         ]);
 
-        return response()->json($user, 201);
+        $user = User::create([
+            'firstName' => $request->firstName,
+            'lastName' => $request->lastName,
+            'email' => $request->email,
+            'password' =>  $request->password
+        ]);
+        return response()->json([
+            'user' => $user,
+        ], 201);
     }
 
     /**
