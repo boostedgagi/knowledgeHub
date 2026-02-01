@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -8,6 +9,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//Users
 Route::get('/users', [UserController::class, 'showAll']);
 Route::get('/users/{id}', [UserController::class, 'show']);
 Route::post('/users', [UserController::class, 'register'])
@@ -17,13 +19,23 @@ Route::put('/users/{id}', [UserController::class, 'update'])
 Route::delete('/users/{id}', [UserController::class, 'delete'])
     ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 
+//Posts
 Route::get('/posts', [PostController::class, 'showAll']);
 Route::get('/posts/{id}', [PostController::class, 'show']);
-Route::post('/posts', [UserController::class, 'post'])
+Route::post('/posts', [PostController::class, 'post'])
     ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
-Route::put('/posts/{id}', [UserController::class, 'update'])
+Route::put('/posts/{id}', [PostController::class, 'update'])
     ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
-Route::delete('/posts/{id}', [UserController::class, 'delete'])
+Route::delete('/posts/{id}', [PostController::class, 'delete'])
+    ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+
+//Category
+Route::get('/categories/{id}', [CategoryController::class, 'show']);
+Route::post('/categories', [CategoryController::class, 'make'])
+    ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+Route::put('/categories/{id}', [CategoryController::class, 'update'])
+    ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+Route::delete('/categories/{id}', [CategoryController::class, 'delete'])
     ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 
 

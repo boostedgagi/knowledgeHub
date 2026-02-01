@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UserFactory extends Factory
 {
-
     protected static function run()
     {
         User::factory()->count(20)->make();
