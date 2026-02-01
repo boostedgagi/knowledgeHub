@@ -19,7 +19,6 @@ return new class extends Migration
             $table->integer('downVotes')->default(0);
             $table->foreignId('categoryId')->nullable()->constrained('categories','id')->nullOnDelete();
             $table->foreignId('userId')->constrained('users','id')->cascadeOnDelete();
-            $table->foreignId('tagId')->nullable()->constrained('tags','id')->nullOnDelete();
             $table->dateTime('createdAt')->default(Carbon::now()->format('Y-m-d H:i:s'));
             $table->dateTime('updatedAt')->nullable();
         });
