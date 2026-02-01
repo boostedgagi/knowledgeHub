@@ -34,6 +34,6 @@ class Post extends Model
     }
 
     public function tag(){
-        return $this->belongsTo(Tag::class);
+        return $this->belongsToMany(Tag::class);
     }
 }
