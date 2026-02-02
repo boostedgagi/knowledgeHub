@@ -8,17 +8,20 @@ class Category extends Model
 {
     protected $primaryKey = 'id';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'id',
         'title',
-        'createdAt'
     ];
 
     protected $casts = [
+        'createdAt' => 'datetime',
         'updatedAt' => 'datetime'
     ];
 
-    public function posts(){
+    public function posts()
+    {
         return $this->hasMany(Post::class);
     }
 }
