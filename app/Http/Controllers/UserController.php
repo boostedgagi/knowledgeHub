@@ -32,12 +32,13 @@ class UserController extends Controller
      */
     public function show(int $id)
     {
-        $user = DB::table('users')->where('id', $id)->first();
 
-        return response()->json(
-            $user,
-            200
-        );
+        $user = User::with('posts')->find($id);
+
+        return (new UserResource($user))
+            ->response()
+            ->setStatusCode(200);
+
     }
 
 
