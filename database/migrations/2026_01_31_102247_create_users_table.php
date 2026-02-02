@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->integer('reputation')->default(0);
             $table->boolean('isAllowed')->default(1);
-            $table->string('roles')->default('user');
+            $table->string('roles')->default('User');
             $table->dateTime('createdAt')->default(Carbon::now()->format('Y-m-d H:i:s'));
             $table->dateTime('updatedAt')->nullable();
         });

@@ -14,6 +14,11 @@ class Comment extends Model
         'postId'
     ];
 
+    protected $casts = [
+        'createdAt' => 'datetime',
+        'updatedAt' => 'datetime'
+    ];
+
     public function getUser(){
         return $this->belongsTo(User::class);
     }
