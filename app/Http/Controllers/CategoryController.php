@@ -39,7 +39,7 @@ class CategoryController
         if (!$user || !$user->isAdministrator()) {
             return response()->json(
                 ['message' => 'Not authorized'],
-                401
+                403
             );
         }
 
@@ -59,6 +59,15 @@ class CategoryController
      */
     public function update(int $id, Request $request)
     {
+        $user = auth('api')->user();
+
+        if (!$user || !$user->isAdministrator()) {
+            return response()->json(
+                ['message' => 'Not authorized'],
+                403
+            );
+        }
+
         $categoryToEdit = DB::table('categories')->where('id', $id);
         $categoryToEdit->update($request->all());
 
@@ -77,6 +86,15 @@ class CategoryController
      */
     public function delete(int $id)
     {
+        $user = auth('api')->user();
+
+        if (!$user || !$user->isAdministrator()) {
+            return response()->json(
+                ['message' => 'Not authorized'],
+                403
+            );
+        }
+
         DB::table('categories')->delete($id);
 
         return response()->json(
