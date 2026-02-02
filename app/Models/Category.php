@@ -6,11 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
+    protected $primaryKey = 'id';
+
     protected $fillable = [
         'id',
         'title',
-        'createdAt',
-        'updatedAt'
+        'createdAt'
+    ];
+
+    protected $casts = [
+        'updatedAt' => 'datetime'
     ];
 
     public function posts(){

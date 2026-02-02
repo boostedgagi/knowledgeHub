@@ -11,13 +11,14 @@ use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-
     /**
      * @use HasFactory<UserFactory>
      */
     use HasFactory, Notifiable;
 
     public $timestamps = false;
+
+    protected $primaryKey = 'id';
 
     /**
      * The attributes that are mass assignable.
@@ -39,17 +40,19 @@ class User extends Authenticatable implements JWTSubject
         'isAllowed' => 'boolean',
         'reputation' => 'integer',
         'password' => 'hashed',
+        'roles' => Roles::class,
         'createdAt' => 'datetime',
         'updatedAt' => 'datetime'
     ];
 
-    public function getFullName(){
-        return $this->firstName.' '.$this->lastName;
+    public function getFullName()
+    {
+        return $this->firstName . ' ' . $this->lastName;
     }
 
-    public function getComments(){
-        return $this->hasMany(Comment::class);
-    }
+//    public function comments(){
+//        return $this->hasMany(Comment::class);
+//    }
 
     public function getJWTIdentifier()
     {
@@ -58,12 +61,21 @@ class User extends Authenticatable implements JWTSubject
 
     public function getJWTCustomClaims()
     {
-        return [];
+        //Exposing user data in token
+
+        return [
+            'id' => $this->id,
+            'email' => $this->email,
+            'firstName' => $this->firstName,
+            'lastName' => $this->lastName,
+            'roles' => $this->roles,
+            'isAllowed' => $this->isAllowed
+        ];
     }
 
     public function getAuthIdentifierName()
     {
-        // TODO: Implement getAuthIdentifierName() method.
+        return 'id';
     }
 
     public function getAuthIdentifier()
@@ -94,5 +106,10 @@ class User extends Authenticatable implements JWTSubject
     public function getRememberTokenName()
     {
         // TODO: Implement getRememberTokenName() method.
+    }
+
+    public function isAdministrator()
+    {
+        return $this->roles === Roles::Administrator;
     }
 }
