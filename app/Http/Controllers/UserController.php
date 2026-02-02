@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -56,11 +57,12 @@ class UserController extends Controller
             'firstName' => $request->firstName,
             'lastName' => $request->lastName,
             'email' => $request->email,
-            'password' =>  $request->password
+            'password' => $request->password
         ]);
-        return response()->json([
-            'user' => $user,
-        ], 201);
+
+        return (new UserResource($user))
+            ->response()
+            ->setStatusCode(201);
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PostResource;
+use App\Models\Post;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -30,12 +32,11 @@ class PostController
      */
     public function show(int $id)
     {
-        $post = DB::table('posts')->where('id', $id)->first();
+        $post = Post::with('category')->find($id);
 
-        return response()->json(
-            $post,
-            200
-        );
+        return (new PostResource($post))
+            ->response()
+            ->setStatusCode(201);
     }
 
 
@@ -44,13 +45,15 @@ class PostController
      */
     public function post(Request $request)
     {
-        $post = DB::table('posts')->insert([
-            'content' => $request->input('content'),
+        $post = Post::create([
+            'postContent' => $request->input('postContent'),
             'categoryId' => $request->input('categoryId'),
             'userId' => $request->input('userId'),
         ]);
 
-        return response()->json($post, 201);
+        return (new PostResource($post))
+        ->response()
+        ->setStatusCode(201);
     }
 
     /**

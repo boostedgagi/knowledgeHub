@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 
 class Post extends Model
 {
+    public $timestamps = false;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -16,7 +18,7 @@ class Post extends Model
      */
     protected $fillable = [
         'id',
-        'content',
+        'postContent',
         'upVotes',
         'downVotes',
         'categoryId',
@@ -30,7 +32,7 @@ class Post extends Model
     }
 
     public function category(){
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'categoryId');
     }
 
     public function tag(){
