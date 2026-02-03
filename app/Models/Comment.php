@@ -21,12 +21,14 @@ class Comment extends Model
         'updatedAt' => 'datetime'
     ];
 
-    public function getUser(){
-        return $this->belongsTo(User::class);
+    public function user(){
+        return $this->belongsTo(User::class,'userId',);
     }
-    public function getPost(){
-        return $this->belongsTo(Post::class);
+
+    public function post(){
+        return $this->belongsTo(Post::class,'postId',);
     }
+
     public function parentComment(){
         return $this->belongsTo(Comment::class);
     }

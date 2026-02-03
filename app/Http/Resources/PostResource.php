@@ -25,6 +25,14 @@ class PostResource extends JsonResource
                     'title' => $this->category->title,
                 ];
             }),
+            'comment'=>$this->whenLoaded('comment',function (){
+                return $this->comment->map(fn($comment)=>[
+                    'id'=>$comment->id,
+                    'content'=>substr($comment->content,15),
+                    'userId'=>$comment->userId,
+                    'createdAt'=>$comment->createdAt,
+                ]);
+            }),
             'createdAt'=>$this->createdAt,
             'updatedAt'=>$this->updatedAt,
         ];

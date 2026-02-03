@@ -18,12 +18,11 @@ class PostController
      */
     public function showAll()
     {
-        return response()->json(
-            DB::table('posts')->get(),
-            200
-        );
-        //Need to make a pagination here,
-        //or integrate it in search
+        $posts = Post::with(['category','comment'])->get();
+
+        return (new PostResource($posts))
+            ->response()
+            ->setStatusCode(201);
     }
 
     /**
@@ -32,7 +31,7 @@ class PostController
      */
     public function show(int $id)
     {
-        $post = Post::with('category')->find($id);
+        $post = Post::with(['category','comment'])->find($id);
 
         return (new PostResource($post))
             ->response()
@@ -64,15 +63,15 @@ class PostController
      */
     public function update(int $id, Request $request)
     {
-        $postToEdit = DB::table('posts')->where('id', $id);
+        $postToEdit = Post::find($id);
         $postToEdit->update($request->all());
 
         $postToEdit->update(['updatedAt' => Carbon::now()->format('Y-m-d H:i:s')]);
 
-        return response()->json(
-            $postToEdit,
-            201
-        );
+
+        return (new PostResource($postToEdit))
+            ->response()
+            ->setStatusCode(201);
     }
 
     /**

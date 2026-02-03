@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -17,10 +18,26 @@ class CommentController
      */
     public function showAll()
     {
+        if (!$this->isAuthenticated()) {
+            return response()->json([
+                'Message' => 'Not Authenticated'
+            ], 403);
+        }
+
         return response()->json(
             Comment::all(),
             200
         );
+    }
+
+    private function isAuthenticated()
+    {
+        $user = auth('api')->user();
+
+        if (!$user) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -29,30 +46,34 @@ class CommentController
      */
     public function show(int $id)
     {
-        $comment = Comment::find($id);
+        if (!$this->isAuthenticated()) {
+            return response()->json([
+                'Message' => 'Not Authenticated'
+            ], 403);
+        }
 
-        return response()->json(
-            $comment,
-            200
-        );
+        $comment = Comment::with(['user', 'post'])->findOrFail($id);
+//        dd($comment,$comment->user, $comment->post);
+        return (new CommentResource($comment))
+            ->response()
+            ->setStatusCode(200);
     }
-
 
     /**
      * POST /comments
      */
     public function create(Request $request)
     {
-        $user = auth('api')->user();
+        $user = auth()->user();
 
         if (!$user) {
-            return response()->json(['message' => 'Not authenticated', 403]);
+            return response()->json([], 403);
         }
 
         $comment = Comment::create([
             'content' => $request->input('content'),
             'userId' => $user->id,
-            'postId'=>$request->input('postId')
+            'postId' => $request->input('postId')
         ]);
 
         return response()->json($comment, 201);
@@ -66,7 +87,13 @@ class CommentController
      */
     public function update(int $id, Request $request)
     {
-        $commentToEdit = DB::table('comments')->where('id', $id);
+        if (!$this->isAuthenticated()) {
+            return response()->json([
+                'Message' => 'Not Authenticated'
+            ], 403);
+        }
+
+        $commentToEdit = Comment::find($id);
         $commentToEdit->update($request->all());
 
         $commentToEdit->update(['updatedAt' => Carbon::now()->format('Y-m-d H:i:s')]);
@@ -84,7 +111,7 @@ class CommentController
      */
     public function delete(int $id)
     {
-        DB::table('comments')->delete($id);
+        Comment::destroy($id);
 
         return response()->json(
             [],
