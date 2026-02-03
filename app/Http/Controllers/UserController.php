@@ -74,8 +74,39 @@ class UserController extends Controller
      */
     public function update(int $id, Request $request)
     {
-        $userToEdit = DB::table('users')->where('id', $id);
+        $userToEdit = User::find($id);
         $userToEdit->update($request->all());
+
+        if($request->roles){
+            $userToEdit->update(['roles' => $request->roles]);
+        }
+
+        $userToEdit->update(['updatedAt' => Carbon::now()->format('Y-m-d H:i:s')]);
+
+        return response()->json(
+            $userToEdit,
+            201
+        );
+    }
+
+    /**
+     * PATCH /change_user_role/{id}
+     * @param int $id
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function changeRole(int $id, Request $request)
+    {
+        $userToEdit = User::find($id);
+//        if($request->roles){
+//            $userToEdit->update(['roles' => $request->roles]);
+//        }
+
+        try {
+            $userToEdit->update(['roles' => $request->input('roles')]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
 
         $userToEdit->update(['updatedAt' => Carbon::now()->format('Y-m-d H:i:s')]);
 

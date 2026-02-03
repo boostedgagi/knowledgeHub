@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'isAllowed' => 1,
             'reputation' => mt_rand(1, 99),
-            'roles' => 'user',
+            'roles' => 'User',
             'createdAt'=> new DateTime()
         ]);
     }

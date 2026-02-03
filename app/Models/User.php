@@ -28,6 +28,7 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'firstName',
         'lastName',
+        'roles' => Roles::class,
         'email',
         'password'
     ];

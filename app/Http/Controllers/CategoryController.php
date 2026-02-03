@@ -29,6 +29,21 @@ class CategoryController
     }
 
     /**
+     * GET /categories
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function showAll()
+    {
+        $category = Category::all();
+
+        return response()->json(
+            $category,
+            200
+        );
+    }
+
+    /**
      * POST /categories
      * @return JsonResponse
      */

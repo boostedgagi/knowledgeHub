@@ -20,7 +20,7 @@ class PostController
     {
         $posts = Post::with(['category','comment'])->get();
 
-        return (new PostResource($posts))
+        return PostResource::collection($posts)
             ->response()
             ->setStatusCode(201);
     }
@@ -46,6 +46,7 @@ class PostController
     {
         $post = Post::create([
             'postContent' => $request->input('postContent'),
+            'title' => $request->input('title'),
             'categoryId' => $request->input('categoryId'),
             'userId' => $request->input('userId'),
         ]);

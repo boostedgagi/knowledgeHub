@@ -19,6 +19,7 @@ class Post extends Model
     protected $fillable = [
         'id',
         'postContent',
+        'title',
         'upVotes',
         'downVotes',
         'categoryId',

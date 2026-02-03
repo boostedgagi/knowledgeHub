@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->text('postContent');
+            $table->string('title');
             $table->integer('upVotes')->default(0);
             $table->integer('downVotes')->default(0);
             $table->foreignId('categoryId')->nullable()->constrained('categories','id')->nullOnDelete();

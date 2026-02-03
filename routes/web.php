@@ -19,10 +19,12 @@ Route::post('/users', [UserController::class, 'register'])
     ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 Route::put('/users/{id}', [UserController::class, 'update'])
     ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+Route::patch('/change_user_role/{id}', [UserController::class, 'changeRole'])
+    ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 Route::delete('/users/{id}', [UserController::class, 'delete'])
     ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
-Route::post('/login', [AuthController::class, 'login'])
-    ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+
+Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('jwt')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
@@ -39,6 +41,7 @@ Route::delete('/posts/{id}', [PostController::class, 'delete'])
 
 //Category
 Route::get('/categories/{id}', [CategoryController::class, 'show']);
+Route::get('/categories/', [CategoryController::class, 'showAll']);
 Route::post('/categories', [CategoryController::class, 'create'])
     ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 Route::put('/categories/{id}', [CategoryController::class, 'update'])

@@ -17,6 +17,7 @@ class PostResource extends JsonResource
         return [
             'id'=>$this->id,
             'postContent'=>$this->postContent,
+            'title'=>$this->title,
             'upVotes'=>$this->upVotes,
             'downVotes'=>$this->downVotes,
             'category' => $this->whenLoaded('category', function () {
