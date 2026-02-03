@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tag;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -28,7 +30,7 @@ class TagController
      */
     public function show(int $id)
     {
-        $post = DB::table('tags')->where('id', $id)->first();
+        $post = User::find($id);
 
         return response()->json(
             $post,
@@ -36,17 +38,30 @@ class TagController
         );
     }
 
-
     /**
      * POST /tags
      */
-    public function post(Request $request)
+    public function create(Request $request)
     {
-        $post = DB::table('posts')->insert([
+        if (!$this->authorizeIfAdmin()) {
+            return response()->json(['message' => 'Not authorized'], 403);
+        }
+
+        $post = TagAlias::Create([
             'title' => $request->input('title'),
         ]);
 
         return response()->json($post, 201);
+    }
+
+    private function authorizeIfAdmin()
+    {
+        $user = auth('api')->user();
+
+        if (!$user || !$user->isAdministrator()) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -57,7 +72,11 @@ class TagController
      */
     public function update(int $id, Request $request)
     {
-        $tagToEdit = DB::table('tags')->where('id', $id);
+        if (!$this->authorizeIfAdmin()) {
+            return response()->json(['message' => 'Not authorized'], 403);
+        }
+
+        $tagToEdit = Tag::find($id);
         $tagToEdit->update($request->all());
 
         $tagToEdit->update(['updatedAt' => Carbon::now()->format('Y-m-d H:i:s')]);
@@ -75,7 +94,11 @@ class TagController
      */
     public function delete(int $id)
     {
-        DB::table('tags')->delete($id);
+        if (!$this->authorizeIfAdmin()) {
+            return response()->json(['message' => 'Not authorized'], 403);
+        }
+
+        Tag::destroy($id);
 
         return response()->json(
             [],

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +44,17 @@ Route::put('/categories/{id}', [CategoryController::class, 'update'])
     ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 Route::delete('/categories/{id}', [CategoryController::class, 'delete'])
     ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+
+Route::get('/tags', [TagController::class, 'showAll']);
+Route::get('/tags/{id}', [TagController::class, 'show']);
+Route::post('/tags', [TagController::class, 'create'])
+    ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+Route::put('/tags/{id}', [TagController::class, 'update'])
+    ->can('admin-only')
+    ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+Route::delete('/tags/{id}', [TagController::class, 'delete'])
+    ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+
 
 
 

@@ -20,7 +20,7 @@ class CategoryController
      */
     public function show(int $id)
     {
-        $category = DB::table('categories')->where('id', $id)->first();
+        $category = Category::find($id);
 
         return response()->json(
             $category,
@@ -34,13 +34,8 @@ class CategoryController
      */
     public function create(Request $request)
     {
-        $user = auth('api')->user();
-
-        if (!$user || !$user->isAdministrator()) {
-            return response()->json(
-                ['message' => 'Not authorized'],
-                403
-            );
+        if (!$this->authorizeIfAdmin()) {
+            return response()->json(['message' => 'Not authorized'], 403);
         }
 
         $category = Category::create([
@@ -59,22 +54,17 @@ class CategoryController
      */
     public function update(int $id, Request $request)
     {
-        $user = auth('api')->user();
-
-        if (!$user || !$user->isAdministrator()) {
-            return response()->json(
-                ['message' => 'Not authorized'],
-                403
-            );
+        if (!$this->authorizeIfAdmin()) {
+            return response()->json(['message' => 'Not authorized'], 403);
         }
 
-        $categoryToEdit = DB::table('categories')->where('id', $id);
+        $categoryToEdit = Category::find($id);
         $categoryToEdit->update($request->all());
 
         $categoryToEdit->update(['updatedAt' => Carbon::now()->format('Y-m-d H:i:s')]);
 
         return response()->json(
-            $categoryToEdit->first(),
+            $categoryToEdit,
             201
         );
     }
@@ -86,13 +76,8 @@ class CategoryController
      */
     public function delete(int $id)
     {
-        $user = auth('api')->user();
-
-        if (!$user || !$user->isAdministrator()) {
-            return response()->json(
-                ['message' => 'Not authorized'],
-                403
-            );
+        if (!$this->authorizeIfAdmin()) {
+            return response()->json(['message' => 'Not authorized'], 403);
         }
 
         DB::table('categories')->delete($id);
@@ -101,5 +86,15 @@ class CategoryController
             [],
             204
         );
+    }
+
+    private function authorizeIfAdmin()
+    {
+        $user = auth('api')->user();
+
+        if (!$user || !$user->isAdministrator()) {
+            return false;
+        }
+        return true;
     }
 }
