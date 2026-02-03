@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class CommentController
     public function showAll()
     {
         return response()->json(
-            DB::table('comments')->get(),
+            Comment::all(),
             200
         );
     }
@@ -28,7 +29,7 @@ class CommentController
      */
     public function show(int $id)
     {
-        $comment = DB::table('comments')->where('id', $id)->first();
+        $comment = Comment::find($id);
 
         return response()->json(
             $comment,
@@ -40,10 +41,18 @@ class CommentController
     /**
      * POST /comments
      */
-    public function post(Request $request)
+    public function create(Request $request)
     {
-        $comment = DB::table('comments')->insert([
+        $user = auth('api')->user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Not authenticated', 403]);
+        }
+
+        $comment = Comment::create([
             'content' => $request->input('content'),
+            'userId' => $user->id,
+            'postId'=>$request->input('postId')
         ]);
 
         return response()->json($comment, 201);

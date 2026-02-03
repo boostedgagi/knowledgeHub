@@ -30,10 +30,10 @@ class TagController
      */
     public function show(int $id)
     {
-        $post = User::find($id);
+        $tag = Tag::find($id);
 
         return response()->json(
-            $post,
+            $tag,
             200
         );
     }
@@ -47,7 +47,7 @@ class TagController
             return response()->json(['message' => 'Not authorized'], 403);
         }
 
-        $post = TagAlias::Create([
+        $post = Tag::Create([
             'title' => $request->input('title'),
         ]);
 
@@ -85,6 +85,7 @@ class TagController
             $tagToEdit,
             201
         );
+
     }
 
     /**

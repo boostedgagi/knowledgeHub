@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
@@ -25,6 +26,7 @@ Route::post('/login', [AuthController::class, 'login'])
 Route::middleware('jwt')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
+
 //Posts
 Route::get('/posts', [PostController::class, 'showAll']);
 Route::get('/posts/{id}', [PostController::class, 'show']);
@@ -45,14 +47,24 @@ Route::put('/categories/{id}', [CategoryController::class, 'update'])
 Route::delete('/categories/{id}', [CategoryController::class, 'delete'])
     ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 
+//Tag
 Route::get('/tags', [TagController::class, 'showAll']);
 Route::get('/tags/{id}', [TagController::class, 'show']);
 Route::post('/tags', [TagController::class, 'create'])
     ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 Route::put('/tags/{id}', [TagController::class, 'update'])
-    ->can('admin-only')
     ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 Route::delete('/tags/{id}', [TagController::class, 'delete'])
+    ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+
+//Comment
+Route::get('/comments', [CommentController::class, 'showAll']);
+Route::get('/comments/{id}', [CommentController::class, 'show']);
+Route::post('/comments', [CommentController::class, 'create'])
+    ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+Route::put('/comments/{id}', [CommentController::class, 'update'])
+    ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+Route::delete('/comments/{id}', [CommentController::class, 'delete'])
     ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 
 
