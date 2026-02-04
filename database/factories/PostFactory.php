@@ -2,34 +2,28 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use App\Models\Post;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Post>
+ * @extends Factory<Post>
  */
 class PostFactory extends Factory
 {
+    protected $model = Post::class;
 
-    protected static function run()
-    {
-        Post::factory()->count(20)->make();
-    }
-
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
-            'content'=> fake()->name(),
-            'upVotes'=>25,
-            'downVotes'=>5,
-            'categoryId'=>1,
-            'userId'=>1,
+            'title'=>fake()->name(),
+            'postContent'=> fake()->text(80),
+            'upVotes'=>fake()->numberBetween(10,20),
+            'downVotes'=>fake()->numberBetween(5,15),
+            'categoryId'=>Category::inRandomOrder()->first()->id,
+            'userId'=>User::inRandomOrder()->first()->id,
             'createdAt'=>Carbon::now()->format('Y-m-d H:i:s')
         ];
     }

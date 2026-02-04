@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 
 class Post extends Model
 {
+    use HasFactory;
+
     public $timestamps = false;
 
     /**

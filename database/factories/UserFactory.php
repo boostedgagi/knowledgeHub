@@ -5,17 +5,14 @@ namespace Database\Factories;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @extends Factory<User>
  */
 class UserFactory extends Factory
 {
-    protected static function run()
-    {
-        User::factory()->count(20)->make();
-    }
-
+    protected $model = User::class;
     /**
      * Define the model's default state.
      *
@@ -24,13 +21,13 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'firstName' => fake()->name(),
-            'lastName' => fake()->name(),
+            'firstName' => fake()->firstName(),
+            'lastName' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => Hash::make('password'),
             'isAllowed' => fake()->boolean,
             'reputation' => fake()->numberBetween(1, 99),
-            'roles' => fake()->word,
+            'roles' => 'User',
             'createdAt' => fake()->dateTime
         ];
     }
