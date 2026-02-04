@@ -19,8 +19,8 @@ Platforma omogućava članovima tima da postavljaju pitanja, daju odgovore, glas
 5. `alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'`
 6. `sail build --no-cache`
 7. `sail up -d`
-8. `sudo mysql -u root -p -e "CREATE DATABASE knowledgehub_db;"`
-9. `php artisan migrate`
+8. `sudo mysql -u root -p -e "CREATE DATABASE knowledgehub_db;"` - lozinka je prazan string, samo pritisnite enter
+9. `php artisan migrate` - ova naredba je opcionalna, sledeca naredba radi i migraciju i popunjavanje tabela u bazi podacima
 10. `php artisan migrate:fresh --seed`
 11. `php artisan serve`
 
