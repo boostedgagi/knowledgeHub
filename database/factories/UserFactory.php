@@ -25,7 +25,7 @@ class UserFactory extends Factory
             'lastName' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
             'password' => Hash::make('password'),
-            'isAllowed' => fake()->boolean,
+            'isAllowed' => 1,
             'reputation' => fake()->numberBetween(1, 99),
             'roles' => 'User',
             'createdAt' => fake()->dateTime
