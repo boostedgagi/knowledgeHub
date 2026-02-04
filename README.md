@@ -19,7 +19,7 @@ Platforma omogućava članovima tima da postavljaju pitanja, daju odgovore, glas
 5. `alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'`
 6. `sail build --no-cache`
 7. `sail up -d`
-8. `mysql -u boostedgagi -p -e "CREATE DATABASE knowledgehub_db;"`
+8. `sudo mysql -u root -p -e "CREATE DATABASE knowledgehub_db;"`
 9. `php artisan migrate`
 10. `php artisan migrate:fresh --seed`
 11. `php artisan serve`
