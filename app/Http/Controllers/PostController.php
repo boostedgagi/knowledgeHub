@@ -18,7 +18,8 @@ class PostController
      */
     public function showAll()
     {
-        $posts = Post::with(['category','comment'])->get();
+        $posts = Post::with(['category','comment','user'])->get();
+//        $paginatedResult = $posts->paginate(5);
 
         return PostResource::collection($posts)
             ->response()
@@ -31,7 +32,7 @@ class PostController
      */
     public function show(int $id)
     {
-        $post = Post::with(['category','comment'])->find($id);
+        $post = Post::with(['category','comment','user'])->find($id);
 
         return (new PostResource($post))
             ->response()
@@ -44,11 +45,13 @@ class PostController
      */
     public function post(Request $request)
     {
+
+
         $post = Post::create([
             'postContent' => $request->input('postContent'),
             'title' => $request->input('title'),
             'categoryId' => $request->input('categoryId'),
-            'userId' => $request->input('userId'),
+            'userId' => $user = auth('api')->user()->id
         ]);
 
         return (new PostResource($post))

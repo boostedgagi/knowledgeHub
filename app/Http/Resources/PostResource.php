@@ -15,27 +15,36 @@ class PostResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'=>$this->id,
-            'postContent'=>$this->postContent,
-            'title'=>$this->title,
-            'upVotes'=>$this->upVotes,
-            'downVotes'=>$this->downVotes,
+            'id' => $this->id,
+            'postContent' => $this->postContent,
+            'title' => $this->title,
+            'upVotes' => $this->upVotes,
+            'downVotes' => $this->downVotes,
             'category' => $this->whenLoaded('category', function () {
                 return [
                     'id' => $this->category->id,
                     'title' => $this->category->title,
                 ];
             }),
-            'comment'=>$this->whenLoaded('comment',function (){
-                return $this->comment->map(fn($comment)=>[
-                    'id'=>$comment->id,
-                    'content'=>substr($comment->content,15),
-                    'userId'=>$comment->userId,
-                    'createdAt'=>$comment->createdAt,
+            'comments' => $this->whenLoaded('comment', function () {
+                return $this->comment->map(fn($comment) => [
+                    'id' => $comment->id,
+                    'content' => substr($comment->content, 15),
+                    'userId' => $comment->userId,
+                    'createdAt' => $comment->createdAt,
                 ]);
             }),
-            'createdAt'=>$this->createdAt,
-            'updatedAt'=>$this->updatedAt,
+            'user' => $this->whenLoaded('user', function () {
+                return [
+                    'id' => $this->user->id,
+                    'firstName' => $this->user->firstName,
+                    'lastName' => $this->user->lastName,
+                    'reputation' => $this->user->reputation,
+                    'email' => $this->user->email
+                ];
+            }),
+            'createdAt' => $this->createdAt,
+            'updatedAt' => $this->updatedAt,
         ];
     }
 }

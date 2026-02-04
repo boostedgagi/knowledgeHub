@@ -24,7 +24,9 @@ Route::patch('/change_user_role/{id}', [UserController::class, 'changeRole'])
 Route::delete('/users/{id}', [UserController::class, 'delete'])
     ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])
+    ->withoutMiddleware([Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+
 Route::middleware('jwt')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
