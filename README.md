@@ -16,7 +16,7 @@ Platforma omogućava članovima tima da postavljaju pitanja, daju odgovore, glas
 2. `cd /knowledgeHub`
 3. Preuzmite `.env` i `compose.yaml` fajlove sa email-a
 4. `composer install`
-5. `alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)`
+5. `alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'`
 6. `sail build --no-cache`
 7. `sail up -d`
 8. `mysql -u root -p -e "CREATE DATABASE knowledgehub_db;"`
